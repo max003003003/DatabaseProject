@@ -18,8 +18,10 @@
  	else{
  		
  		
- 		echo "Welcome <b> $username</b>, <a href=' ./logout.php'>Logout</a>";
- 		echo "<a href=room_manage.php>room_manage</a>";
+ 		echo "Welcome <b> $username</b>, <a href=' ./logout.php'>Logout</a>\n<br>";
+ 		echo "<a href=room_manage.php>room_manage</a>\n<br>";
+ 		echo "<a href=PUsetting.php>PUsetting</a>\n<br>";
+ 		echo "<a href=Customersetting.php>Customersetting</a>\n<br>";
  	}
  	
 

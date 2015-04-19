@@ -28,19 +28,35 @@
 
 echo <<<HIPPOTOPAMUS
 
+
+
 <table   class="table table-bordered" border=1>
 		 <tr>
-		 <th>Public-UtilityID</th>
-		 <th>Name</th>
-		 <th>PricePerUnit</th>		
+		 <th>Customer_ID</th>
+		 <th>Fname</th>
+		 <th>Lname</th>	
+		 <th>Sex</th>	
+		 <th> IDCard</th>
+		 <th> Address </th>
+		 <th> Room_Number</th>
+		 <th> BirthDate</th>
 		 </tr>   
 	 <form method="POST" action"{$_SERVER['PHP_SELF']}">
 		<tr>
-		<td><input type="text" name="upublicutility" size="8"></td>			 
+		<td><input type="text" name="ucusid" ></td>			 
 
-		<td><input type="text" name="uname"  size="8" ></td> 
+		<td><input type="text" name="ufname"   ></td> 
 
-	    <td><input type="text" name="uprice" size="5"></td>  
+	    <td><input type="text" name="ulname" ></td>  
+	    <td><input type="text" name="usex" ></td> 
+
+	    <td><input type="text" name="uidcard"   ></td> 
+
+	    <td><input type="text" name="uaddress" ></td>  
+
+        <td><input type="text" name="uroomnumber"  ></td> 
+
+	    <td><input type="text" name="ubirth" ></td> 
 
 	 <td><input type="submit" class="btn btn-primary btn-lg active" name="send" value="add" ></td>
 	 </tr>
@@ -60,25 +76,36 @@ $con=mysql_connect("localhost","root","root");
 		}
 		 
 		 mysql_select_db("domitaryproject",$con);
-        mysql_query("SET NAMES UTF8");
-		 $sql="select *from publict_utility";
-		 $mydata=mysql_query($sql,$con);		 
+         mysql_query("SET NAMES UTF8");
+		 $sql="select *from customer";
+		 $mydata=mysql_query($sql,$con);	 
 
 
 
 		 echo "<table  class=\"table table-bordered\" border=1 >
-	    <tr>
-		 <th>Publict_utilityID</th>
-		 <th>Name</th>
-		 <th>PricePerUnit</th>		
+	   <tr>
+		 <th>Customer_ID</th>
+		 <th>Fname</th>
+		 <th>Lname</th>	
+		 <th>Sex</th>	
+		 <th> IDCard</th>
+		 <th> Address </th>
+		 <th> Room_Number</th>
+		 <th> BirthDate</th>
 		 </tr>  ";
 
 	while ($record=mysql_fetch_array($mydata)) { 		 
 
 		echo "<tr>";
-		echo "<td>".$record['Publict_utilityID']. " </td>";
-		echo "<td>".$record['Name']. " </td>";
-		echo "<td>".$record['PricePerUnit']. " </td>";		
+		echo "<td>".$record['Customer_ID']. " </td>";
+		echo "<td>".$record['Fname']. " </td>";
+		echo "<td>".$record['Lname']. " </td>";
+		echo "<td>".$record['Sex']. " </td>";
+		echo "<td>".$record['IDCard']. " </td>";
+		echo "<td>".$record['Address']. " </td>";
+		echo "<td>".$record['Room_Number']. " </td>";
+		echo "<td>".$record['BirthDate']. " </td>";
+
 		//echo "<td>"."<input type=hidden name=hidden value=". $record['Room_Number']. " </td>"; 
 		//echo "<td><input type='submit' name='edit' value='edit'></td>"; 
 	  		
@@ -90,13 +117,23 @@ $con=mysql_connect("localhost","root","root");
 	
 
 function process_form(){
-	$puid=trim($_POST["upublicutility"]);
-	$name=trim($_POST["uname"]);
-	$priceperunit=trim($_POST["uprice"]); 
-	$puid=addslashes($puid);
-	$name=addslashes($name);
-	$priceperunit=doubleval($priceperunit);  
-	echo $puid."  ".$name."  ".$priceperunit;
+	$cusid=trim($_POST["ucusid"]);
+	$fname=trim($_POST["ufname"]);
+	$lname=trim($_POST["ulname"]); 
+	$sex=trim($_POST["usex"]);
+	$idcard=trim($_POST["uidcard"]);
+	$address=trim($_POST["uaddress"]); 
+	$roomnumber=trim($_POST["uroomnumber"]);
+	$birth=trim($_POST["ubirth"]);
+	$cusid=addslashes($cusid);
+	$fname=addslashes($fname);
+	$lname=addslashes($lnam); 
+	$sex=addslashes($sex);
+	$idcard=addslashes($idcard);
+	$adddress=addslashes($addslashes);
+	$roomnumber=addslashes($roomnumber);
+	$birth=addslashes($birth);
+	
 	 
 	$con=mysql_connect("localhost","root","root");
 		if(!$con )
@@ -106,7 +143,8 @@ function process_form(){
 
 	mysql_select_db("domitaryproject");    
 
-	$sql= "INSERT INTO publict_utility VALUES ({$puid},'{$name}',{$priceperunit});";
+	$sql= "INSERT INTO customer VALUES ({$cusid},'{$fname}','{$lname}','{$sex}',{$idcard},'{$address}',{$roomnumber},'{$birth}');";
+	echo $sql;
 	
 	$result=mysql_query($sql,$con);
 
