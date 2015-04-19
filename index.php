@@ -54,12 +54,8 @@
 
 
 	             		$query=mysql_query("select *from users where User='$user'");
-	             		$password=md5($password);
-
-
-	             	    
-
 	             	
+	             		$password=md5($password);      	
 	             		$numrows=mysql_num_rows($query);
 
 
@@ -67,19 +63,31 @@
 	             		{
 
 	             			$row =mysql_fetch_assoc($query);
+
 	             		
 	             			$dbuser=$row['User'];
 	             			$dbpass=$row['Password'];
+	             			$type=$row['type'];
+	             			
+	             			
+	             			
+
+									             			
+
 
 
 
 	             			
 	             			if($password==$dbpass)
 	             			{
+	             				if($type==true){
 	             					$_SESSION["valid_user"]=$dbuser;
+                                    	
+	             					echo "you have been logged in as <b> $dbuser  
+	             					</b> . <a href='adminmember.php'>Click</a> Click here to go to the member page.";
+	             				}else
+	             					echo "sorry  $form";
 
-
-	             					echo "you have been logged in as <b> $dbuser</b> . <a href='adminmember.php'>Click</a> Click here to go to the member page.";
 
 	             			}else
 	             				echo "You did not enter correct password.  $form";
