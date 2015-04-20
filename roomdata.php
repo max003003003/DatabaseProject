@@ -3,10 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>สาธารณูปโภค</title>
+    <title>เพิ่มข้อมูลห้อง</title>
 
     <!-- Bootstrap -->
     <link href="Bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,17 +17,20 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="jquery-1.11.2.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   
   <script src="Bootstrap/dist/js/bootstrap.min.js"></script>
-  </head>
-
+ </head><div class="container">
  <nav  class="navbar navbar-static-top"align="center" >
   <div class="container" > 
     <a href="#menu-toggle"  id="menu-toggle" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
      
   </div>
   </nav>
-  <div class="container">
+
+  
    <body>
 
 	    <div id="wrapper">
@@ -65,7 +67,6 @@
 	                <li>
 	                    <a href="logout.php">Logout</a>
 	                </li>
-	               
 	            </ul>
 	        </div>
 	        <!-- /#sidebar-wrapper -->
@@ -75,12 +76,20 @@
 	            <div class="container-fluid">
 	                <div class="row">
 	                    <div class="col-lg-12">
-	                        <h1>สาธารณูปโภค</h1>
 	                       
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+	                  <h1>add room 
+	                       <button id="add" type="button" class="btn btn-primary" align="right">back</button>
+	                       </h1>
+	                        <script>
+							$(document).ready(function(){
+								    $("#add").click(function(){
+	      							  window.location = 'room_manage.php';
+	  													  });
+							});
+						</script>
+	                 
+
+	                   
 	        <!-- /#page-content-wrapper -->
 
 	    </div>
@@ -99,15 +108,53 @@
 	        $("#wrapper").toggleClass("toggled");
 	    });
 	    </script>
+	    <br>
+
+
+   <div>
+       <form action=room_manage.php method=post>
+       <h align="center">add new room</h>
+		<table align="center">
+		 <form action="addroomforom.php" method="post">  
+  <tr>
+             <td>RoomNumber:</td><td><input type="text" name="uroom_Number"></td>
+   </tr>
+    <tr>
+          <td>Status:</td><td><input type="radio" name="ustatus" value="ready" checked>ready
+        <input type="radio" name="status" value="stay">stay
+    </tr>
+    <tr>
+             <td>Deposit:</td><td><input type="text" name="udeposit"></td>
+    </tr>
+    <tr>
+               <td>Type:</td><td><input type="radio" name="utype" value="daily"  checked>daily
+        <input type="radio" name="status" value="monthly">monthly
+    </td>
+    </tr>
+    <tr>
+            <td>Price:</td><td><input type="text" name="uprice"></td>
+     </tr>
+     <tr>
+        <td></td><td><input type="submit" name="send" value="add"></td>
+    </tr>
+    </tr>
+    </form>
+
+	</div>
+	
+		
+   
+
+
+
+
 
  </body>
 <?php
 
-
-
-
 	if(isset($_POST["send"]))
-			 process_form(); 
+			 process_form(); 	 
+
 
 $con=mysql_connect("localhost","root","root");
 		if(!$con )
@@ -116,43 +163,26 @@ $con=mysql_connect("localhost","root","root");
 		}
 		 
 		 mysql_select_db("domitaryproject",$con);
-        mysql_query("SET NAMES UTF8");
-		 $sql="select *from publict_utility";
-		 $mydata=mysql_query($sql,$con);		 
 
-
-
-		 echo "<table  class=\"table table-bordered\" border=1 style=\"width:50%\" align=\"center\">
-	    <tr>
-		 <th>Publict_utilityID</th>
-		 <th>Name</th>
-		 <th>PricePerUnit</th>		
-		 </tr>  ";
-
-	while ($record=mysql_fetch_array($mydata)) { 		 
-
-		echo "<tr>";
-		echo "<td>".$record['Publict_utilityID']. " </td>";
-		echo "<td>".$record['Name']. " </td>";
-		echo "<td>".$record['PricePerUnit']. " </td>";		
-		//echo "<td>"."<input type=hidden name=hidden value=". $record['Room_Number']. " </td>"; 
-		//echo "<td><input type='submit' name='edit' value='edit'></td>"; 
-	  		
-	}
-
-
-			 
-
-	
+		 $sql="select *from room";
+		 $mydata=mysql_query($sql,$con); 
 
 function process_form(){
-	$puid=trim($_POST["upublicutility"]);
-	$name=trim($_POST["uname"]);
-	$priceperunit=trim($_POST["uprice"]); 
-	$puid=addslashes($puid);
-	$name=addslashes($name);
-	$priceperunit=doubleval($priceperunit);  
-	echo $puid."  ".$name."  ".$priceperunit;
+	$roomNumber=trim($_POST["uroom_Number"]);
+	$status=trim($_POST["ustatus"]);
+	$deposit=trim($_POST["udeposit"]); 
+	$user=$roomNumber;
+	$password=$roomNumber;
+	$type=trim($_POST["utype"]);
+	$price=trim($_POST["uprice"]);
+	$roomNumber=addslashes($roomNumber);
+	$status=addslashes($status);
+	$deposit=doubleval($deposit);
+	$user=addslashes($user);
+	$password=addslashes($password);
+	$type=addslashes($type);
+	$price=doubleval($price);  
+	echo $roomNumber.$status;
 	 
 	$con=mysql_connect("localhost","root","root");
 		if(!$con )
@@ -162,22 +192,24 @@ function process_form(){
 
 	mysql_select_db("domitaryproject");    
 
-	$sql= "INSERT INTO publict_utility VALUES ({$puid},'{$name}',{$priceperunit});";
-	
+	$sql= "INSERT INTO room VALUES ({$roomNumber},'{$status}',{$deposit},'{$type}',{$price});";
+	$sql2="INSERT INTO  users VALUES ('{$user}',md5('{$password}'),0)";
 	$result=mysql_query($sql,$con);
-
-	if($result)
-		echo "<script> alert(\" have been add\"); </script>";  
+	$result2=mysql_query($sql2,$con);	
+	if($result&&$result2)
+		echo "<script> alert(\" Your data have been add\"); </script>";  
 	else  
-		echo" Error";
-		
+		echo "<script> alert(\" Error \"); </script>";  		
 	mysql_close($con);
 }
 
 
 ?>
 
-
+ </div>
+	                </div>
+	            </div>
+	        </div>
 
    </div>
 
