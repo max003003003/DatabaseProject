@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+
+  
+
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -44,25 +48,25 @@
 	                    </a>
 	                </li>               
 	                <li>
-	                    <a href="room_manage.php">ข้อมูลห้องพัก</a>
+	                    <a href="roomdata.php">ข้อมูลห้องพัก</a>
 	                </li>
 	                <li>
 	                    <a href="Customersetting.php">ลูกค้า</a>
 	                </li>
 	                <li>
-	                    <a href="#">บิล</a>
+	                    <a href="bill.php">บิล</a>
 	                </li>
 	                <li>
 	                    <a href="PUsetting.php">สาธารณูปโภค</a>
 	                </li>
 	                <li>
-	                    <a href="#">ลูกจ้าง</a>
+	                    <a href="employee.php">ลูกจ้าง</a>
 	                </li>
 	                 <li>
-	                    <a href="#">ซ่อม</a>
+	                    <a href="fix.php">ซ่อม</a>
 	                </li>
 	                 <li>
-	                    <a href="#">ตั้งค่า</a>
+	                    <a href="setting.php">ตั้งค่า</a>
 	                </li>
 	                <li>
 	                    <a href="logout.php">Logout</a>
@@ -77,16 +81,10 @@
 	                <div class="row">
 	                    <div class="col-lg-12">
 	                       
-	                  <h1>add room 
-	                       <button id="add" type="button" class="btn btn-primary" align="right">back</button>
+	                  <h1>roomdata
+	                      
 	                       </h1>
-	                        <script>
-							$(document).ready(function(){
-								    $("#add").click(function(){
-	      							  window.location = 'room_manage.php';
-	  													  });
-							});
-						</script>
+	                        
 	                 
 
 	                   
@@ -110,50 +108,70 @@
 	    </script>
 	    <br>
 
-
-   <div>
-       <form action=room_manage.php method=post>
-       <h align="center">add new room</h>
-		<table align="center">
-		 <form action="addroomforom.php" method="post">  
-  <tr>
-             <td>RoomNumber:</td><td><input type="text" name="uroom_Number"></td>
-   </tr>
-    <tr>
-          <td>Status:</td><td><input type="radio" name="ustatus" value="ready" checked>ready
-        <input type="radio" name="status" value="stay">stay
-    </tr>
-    <tr>
-             <td>Deposit:</td><td><input type="text" name="udeposit"></td>
-    </tr>
-    <tr>
-               <td>Type:</td><td><input type="radio" name="utype" value="daily"  checked>daily
-        <input type="radio" name="status" value="monthly">monthly
-    </td>
-    </tr>
-    <tr>
-            <td>Price:</td><td><input type="text" name="uprice"></td>
-     </tr>
-     <tr>
-        <td></td><td><input type="submit" name="send" value="add"></td>
-    </tr>
-    </tr>
-    </form>
-
-	</div>
-	
-		
-   
-
-
+ 
 
 
 
  </body>
 <?php
+			  
+			  
+			  
+  session_start();
+  
 
-	if(isset($_POST["send"]))
-			 process_form(); 	 
+
+	 
+	if(isset($_POST["Add"]))
+{ 
+	
+   $_SESSION["roomNumber"]=$_POST["hidden"];
+
+ echo " <script>
+				$(document).ready(function(){
+								    
+	      							  window.location = 'addcustomerform.php';
+	  													  
+							});
+	      </script>
+";
+}
+if(isset($_POST["Checkout"]))
+{
+
+$con=mysql_connect("localhost","root","root");
+		if(!$con )
+		{
+			die("connot connect: ".mysql_error());
+		}
+		 
+		 mysql_select_db("domitaryproject",$con);
+
+		 $sql="select *from room";
+		 $roomNumber=$_POST["hidden"];
+		 $now =time();         
+         $sql="UPDATE room_log SET Date_out=CURRENT_TIMESTAMP() WHERE roomNumber=$roomNumber ; ";         
+         $sql2="UPDATE room SET Status=\"ready\",Deposit=0 WHERE Room_Number={$roomNumber};";
+         
+         $sql3="SELECT Deposit from room WHERE Room_Number={$roomNumber};";
+         $deposit=mysql_fetch_array(mysql_query($sql3));
+         $deposit=$deposit["Deposit"];
+          $result=mysql_query($sql,$con); 
+          $result2=mysql_query($sql2,$con);
+
+       
+        if($result&&$result2)
+		echo "<script> alert(\" Your have been checked out  plese return deposit " .$deposit." \"); </script>";  
+	   else  
+		echo "<script> alert(\" Error \"); </script>";  		
+	mysql_close($con);
+
+
+         
+}
+
+
+
 
 
 $con=mysql_connect("localhost","root","root");
@@ -167,41 +185,42 @@ $con=mysql_connect("localhost","root","root");
 		 $sql="select *from room";
 		 $mydata=mysql_query($sql,$con); 
 
-function process_form(){
-	$roomNumber=trim($_POST["uroom_Number"]);
-	$status=trim($_POST["ustatus"]);
-	$deposit=trim($_POST["udeposit"]); 
-	$user=$roomNumber;
-	$password=$roomNumber;
-	$type=trim($_POST["utype"]);
-	$price=trim($_POST["uprice"]);
-	$roomNumber=addslashes($roomNumber);
-	$status=addslashes($status);
-	$deposit=doubleval($deposit);
-	$user=addslashes($user);
-	$password=addslashes($password);
-	$type=addslashes($type);
-	$price=doubleval($price);  
-	echo $roomNumber.$status;
-	 
-	$con=mysql_connect("localhost","root","root");
-		if(!$con )
-		{
-			die("connot connect: ".mysql_error());
-		}
+       
+		 echo "<table  class=\"table table-bordered\" border=1 >
+		 <tr>
+		 <th class=\"text-center\">RoomNumber</th>
+		 <th class=\"text-center\">Status</th>
+		 <th class=\"text-center\">Deposit</th>
+		 <th class=\"text-center\">Type</th>
+		 <th class=\"text-center\">Price</th>
+    <th class=\"text-center\">Option</th>
+		 </tr> ";
+ 
 
-	mysql_select_db("domitaryproject");    
+  
+	while ($record=mysql_fetch_array($mydata)) { 
 
-	$sql= "INSERT INTO room VALUES ({$roomNumber},'{$status}',{$deposit},'{$type}',{$price});";
-	$sql2="INSERT INTO  users VALUES ('{$user}',md5('{$password}'),0)";
-	$result=mysql_query($sql,$con);
-	$result2=mysql_query($sql2,$con);	
-	if($result&&$result2)
-		echo "<script> alert(\" Your data have been add\"); </script>";  
-	else  
-		echo "<script> alert(\" Error \"); </script>";  		
-	mysql_close($con);
-}
+		echo "<tr>";	
+		echo"<form action=roomdata.php method=post>";	
+		echo "<td class=\"text-center\">".$record['Room_Number']. " </td>";
+		echo "<td class=\"text-center\">".$record['Status']. " </td>";
+		echo "<td class=\"text-center\">".$record['Deposit']. " </td>";
+		echo "<td class=\"text-center\">".$record['Type']. " </td>";
+		echo "<td class=\"text-center\">".$record['Price']. " </td>";   
+		echo "<td style = \"display:none\">"."<input type=hidden name=hidden value=". $record['Room_Number']. " </td>"; 
+        if( strcmp($record['Status'],"ready")==0){
+         	echo " <td class=\"text-center\"><input  id=\"add\" class=\"btn btn-success\" type='submit' name=\"Add\" value=\"Add\" > ";
+         	echo "</form>";
+
+        }
+        else{
+		  echo "<td class=\"text-center\"> <input class=\"btn btn-danger\" type='submit' name=\"Checkout\" value=\"Checkout\" > "; 
+		  echo "</form>";
+        }
+		
+	
+	  		
+	}
 
 
 ?>

@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php
+
+  session_start()
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -44,7 +48,7 @@
 	                    </a>
 	                </li>               
 	                <li>
-	                    <a href="room_manage.php">ข้อมูลห้องพัก</a>
+	                    <a href="roomdata.php">ข้อมูลห้องพัก</a>
 	                </li>
 	                <li>
 	                    <a href="Customersetting.php">ลูกค้า</a>
@@ -117,7 +121,7 @@
 		<table align="center">
 		 <form action="addroomforom.php" method="post">  
   <tr>
-             <td>RoomNumber:</td><td><input type="text" name="uroom_Number"></td>
+             <td>RoomNumber:</td><td><input type="text" name="uroom_Number"  ></td>
    </tr>
     <tr>
           <td>Status:</td><td><input type="radio" name="ustatus" value="ready" checked>ready
@@ -151,6 +155,10 @@
 
  </body>
 <?php
+    session_start();
+ 
+	
+
 
 	if(isset($_POST["send"]))
 			 process_form(); 	 

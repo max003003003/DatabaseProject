@@ -45,7 +45,7 @@
 	                    </a>
 	                </li>               
 	                <li>
-	                    <a href="room_manage.php">ข้อมูลห้องพัก</a>
+	                    <a href="roomdata.php">ข้อมูลห้องพัก</a>
 	                </li>
 	                <li>
 	                    <a href="Customersetting.php">ลูกค้า</a>

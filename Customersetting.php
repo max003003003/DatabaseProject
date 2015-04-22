@@ -43,25 +43,25 @@
 	                    </a>
 	                </li>               
 	                <li>
-	                    <a href="room_manage.php">ข้อมูลห้องพัก</a>
+	                   <a href="roomdata.php">ข้อมูลห้องพัก</a>
 	                </li>
 	                <li>
 	                    <a href="Customersetting.php">ลูกค้า</a>
 	                </li>
 	                <li>
-	                    <a href="#">บิล</a>
+	                    <a href="bill.php">บิล</a>
 	                </li>
 	                <li>
 	                    <a href="PUsetting.php">สาธารณูปโภค</a>
 	                </li>
 	                <li>
-	                    <a href="#">ลูกจ้าง</a>
+	                    <a href="employee.php">ลูกจ้าง</a>
 	                </li>
 	                 <li>
-	                    <a href="#">ซ่อม</a>
+	                    <a href="fix.php">ซ่อม</a>
 	                </li>
 	                 <li>
-	                    <a href="#">ตั้งค่า</a>
+	                    <a href="setting.php">ตั้งค่า</a>
 	                </li>
 	                <li>
 	                    <a href="logout.php">Logout</a>
@@ -78,14 +78,14 @@
 	                    <div class="col-lg-12">
 	                        <h1>ลูกค้า</h1>
 	                       
-	                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+	                     
 	                    </div>
 	                </div>
 	            </div>
 	        </div>
 	        <!-- /#page-content-wrapper -->
 
-	    </div>
+	    
 	    <!-- /#wrapper -->
 
 	    <!-- jQuery -->
@@ -102,8 +102,7 @@
 	    });
 	    </script>
 
- </body>
-     
+ 
 
 	<?php
 
@@ -121,8 +120,11 @@
 			 $sql="select *from customer";
 			 $mydata=mysql_query($sql,$con);	 
 
-
-
+           $keys = array_keys($_POST);
+   foreach($keys as $key) {
+    echo $key." ".($_POST[$key]);
+   echo "<br>";
+   }
 			 echo " <div class=\"span9\"> <table  class=\"table table-bordered\" border=1 >
 		   <tr>
 			 <th>Customer_ID</th>
@@ -138,6 +140,7 @@
 		while ($record=mysql_fetch_array($mydata)) { 		 
 
 			echo "<tr>";
+
 			echo "<td>".$record['Customer_ID']. " </td>";
 			echo "<td>".$record['Fname']. " </td>";
 			echo "<td>".$record['Lname']. " </td>";
@@ -192,7 +195,12 @@
 		mysql_close($con);
 	}
 	?>
+</div>
+
+</body>
+
 
 </div>
-  
+
+	                
  </html>

@@ -42,25 +42,25 @@
 	                    </a>
 	                </li>               
 	                <li>
-	                    <a href="room_manage.php">ข้อมูลห้องพัก</a>
+	                    <a href="roomdata.php">ข้อมูลห้องพัก</a>
 	                </li>
 	                <li>
 	                    <a href="Customersetting.php">ลูกค้า</a>
 	                </li>
 	                <li>
-	                    <a href="#">บิล</a>
+	                    <a href="bill.php">บิล</a>
 	                </li>
 	                <li>
 	                    <a href="PUsetting.php">สาธารณูปโภค</a>
 	                </li>
 	                <li>
-	                    <a href="#">ลูกจ้าง</a>
+	                    <a href="employee.php">ลูกจ้าง</a>
 	                </li>
 	                 <li>
-	                    <a href="#">ซ่อม</a>
+	                    <a href="fix.php">ซ่อม</a>
 	                </li>
 	                 <li>
-	                    <a href="#">ตั้งค่า</a>
+	                    <a href="setting.php">ตั้งค่า</a>
 	                </li>
 	                <li>
 	                    <a href="logout.php">Logout</a>
@@ -83,7 +83,7 @@
 	        </div>
 	        <!-- /#page-content-wrapper -->
 
-	    </div>
+	   
 	    <!-- /#wrapper -->
 
 	    <!-- jQuery -->
@@ -100,7 +100,6 @@
 	    });
 	    </script>
 
- </body>
 <?php
 
 
@@ -177,8 +176,11 @@ function process_form(){
 
 ?>
 
+ </div>
+ </body>
 
 
-   </div>
+
+   
 
 </html>
