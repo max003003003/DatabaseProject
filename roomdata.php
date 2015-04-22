@@ -81,9 +81,8 @@
 	                <div class="row">
 	                    <div class="col-lg-12">
 	                       
-	                  <h1>roomdata
-	                      
-	                       </h1>
+	                  <h1>roomdata</h1>              
+	                       
 	                        
 	                 
 
@@ -114,14 +113,7 @@
 
  </body>
 <?php
-			  
-			  
-			  
   session_start();
-  
-
-
-	 
 	if(isset($_POST["Add"]))
 { 
 	
@@ -151,30 +143,22 @@ $con=mysql_connect("localhost","root","root");
 		 $roomNumber=$_POST["hidden"];
 		 $now =time();         
          $sql="UPDATE room_log SET Date_out=CURRENT_TIMESTAMP() WHERE roomNumber=$roomNumber ; ";         
-         $sql2="UPDATE room SET Status=\"ready\",Deposit=0 WHERE Room_Number={$roomNumber};";
-         
+         $sql2="UPDATE room SET Status=\"ready\",Deposit=0 WHERE Room_Number={$roomNumber};";         
          $sql3="SELECT Deposit from room WHERE Room_Number={$roomNumber};";
          $deposit=mysql_fetch_array(mysql_query($sql3));
          $deposit=$deposit["Deposit"];
-          $result=mysql_query($sql,$con); 
-          $result2=mysql_query($sql2,$con);
-
+         $result=mysql_query($sql,$con); 
+         $result2=mysql_query($sql2,$con);
        
         if($result&&$result2)
-		echo "<script> alert(\" Your have been checked out  plese return deposit " .$deposit." \"); </script>";  
+		echo "<script> alert(\" Your have been checked out plese return deposit " .$deposit." \"); </script>";  
 	   else  
 		echo "<script> alert(\" Error \"); </script>";  		
-	mysql_close($con);
-
-
-         
+	   mysql_close($con);         
 }
 
 
-
-
-
-$con=mysql_connect("localhost","root","root");
+       $con=mysql_connect("localhost","root","root");
 		if(!$con )
 		{
 			die("connot connect: ".mysql_error());
@@ -216,10 +200,7 @@ $con=mysql_connect("localhost","root","root");
         else{
 		  echo "<td class=\"text-center\"> <input class=\"btn btn-danger\" type='submit' name=\"Checkout\" value=\"Checkout\" > "; 
 		  echo "</form>";
-        }
-		
-	
-	  		
+        }  		
 	}
 
 

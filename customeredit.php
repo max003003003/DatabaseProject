@@ -83,7 +83,7 @@ session_start();
 	                        <script>
 							$(document).ready(function(){
 								    $("#add").click(function(){
-	      							  window.location = 'roomdata.php';
+	      							  window.location = 'Customersetting.php';
 	  													  });
 							});
 						</script>

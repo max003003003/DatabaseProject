@@ -108,6 +108,21 @@
 
 		if(isset($_POST["send"]))
 				 process_form(); 
+		if(isset($_POST["Edit"]))
+			{ 
+				
+			   $_SESSION["roomNumber"]=$_POST["hidden"];	  
+
+
+			 echo " <script>
+							$(document).ready(function(){
+											    
+				      							  window.location = 'customeredit.php';
+				  													  
+										});
+				      </script>
+			";
+			}
 
 	$con=mysql_connect("localhost","root","root");
 			if(!$con )
@@ -132,27 +147,28 @@
 			 <th>Lname</th>	
 			 <th>Sex</th>	
 			 <th> IDCard</th>
-			 <th> Address </th>
-			 <th> Room_Number</th>
+			 <th> Address </th>			 
 			 <th> BirthDate</th>
+			 <th> Option </th>
 			 </tr>  ";
 
 		while ($record=mysql_fetch_array($mydata)) { 		 
 
 			echo "<tr>";
+		echo"<form action=\"Customersetting.php\" method=\"post\">";
 
 			echo "<td>".$record['Customer_ID']. " </td>";
 			echo "<td>".$record['Fname']. " </td>";
 			echo "<td>".$record['Lname']. " </td>";
 			echo "<td>".$record['Sex']. " </td>";
 			echo "<td>".$record['IDCard']. " </td>";
-			echo "<td>".$record['Address']. " </td>";
-			echo "<td>".$record['Room_Number']. " </td>";
+			echo "<td>".$record['Address']. " </td>";		
 			echo "<td>".$record['BirthDate']. " </td>";
 
-			//echo "<td>"."<input type=hidden name=hidden value=". $record['Room_Number']. " </td>"; 
-			//echo "<td><input type='submit' name='edit' value='edit'></td>"; 
-		  		
+			echo "<td style = \"display:none\">"."<input type=hidden name=hidden value=". $record['Customer_ID']. " </td>"; 
+			echo " <td class=\"text-center\"> <input  id=\"Edit\" class=\"btn btn-warning\" type='submit' name=\"Edit\" value=\"Edit\" > ";
+			echo " <input  id=\"add\" class=\"btn btn-danger\" type='submit' name=\"Delete\" value=\"Delete\" > </td>";
+		  		echo "</form>";
 		}	
 
 	function process_form(){
