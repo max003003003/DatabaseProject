@@ -118,6 +118,7 @@
 { 
 	
    $_SESSION["roomNumber"]=$_POST["hidden"];
+   $_SESSION["ch"]=1;
 
  echo " <script>
 				$(document).ready(function(){

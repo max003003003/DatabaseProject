@@ -79,11 +79,18 @@ session_start();
 	                       
 	                  <h1>add new customer 
 	                       <button id="add" type="button" class="btn btn-primary" align="right">back</button>
-	                       </h1>
+	                  </h1>
 	                        <script>
 							$(document).ready(function(){
 								    $("#add").click(function(){
-	      							  window.location = 'roomdata.php';
+	      							  window.location =<?php session_start(); 	      							  
+	      							                          if($_SESSION["ch"]){
+	      							                            echo "'roomdata.php';";}
+	      							                          else{
+	      							                          	echo "'Customersetting.php';"; 
+	      							                            
+	      							                            }
+	      							                          ?>
 	  													  });
 							});
 						</script>
@@ -114,13 +121,17 @@ session_start();
        <h align="center"></h>
 		<table align="center">
 		 <form action="addcustomerform.php " method="post">  
-  
+
    <tr>
-             <td>RoomNumber:</td><td><input type="text" name="uroomNumber" value=<?php echo $_SESSION["roomNumber"]; ?> ></td>
+    <td>RoomNumber:</td><td><input type=\"text\" name=\"uroomNumber\" value=<?php echo $_SESSION["roomNumber"]; ?> ></td>
    </tr>
    <tr>
-             <td>Deposit</td><td><input type="text" name="udeposit" value="0"></td>
+       <?php    if($_SESSION["ch"])
+                   echo "<td>Deposit</td><td><input type=\"text\" name=\"udeposit\" value=\"0\"></td>";
+      ?>
    </tr>
+
+
    <tr>
              <td>CustomerID:</td><td><input type="text" name="ucustomerid"></td>
    </tr>
@@ -139,6 +150,9 @@ session_start();
     </tr>
      <tr>
              <td>Address:</td><td><input type="text" name="uaddres"></td>
+    </tr>
+    <tr> 
+           <td>Tel.</td><td><input type="text" name="utel"></td>
     </tr>
 <tr><td>
 <select name=month value=''>Select Month</option>
@@ -233,6 +247,7 @@ function process_form(){
 	$birthdate=trim($_POST["year"]."-".$_POST["month"]."-".$_POST["dt"]);	
 	$deposit=trim($_POST["udeposit"]);
 	$roomNumber=trim($_POST["uroomNumber"]);	 
+	$tel=trim($_POST["utel"]);
 	$con=mysql_connect("localhost","root","root");
 		if(!$con )
 		{
@@ -254,7 +269,7 @@ function process_form(){
     $rec= mysql_fetch_array($re);
     $id=$rec["id"]+1 ;
    	$sql="INSERT INTO room_log( id,RoomNumber, customer_Customer_ID ) VALUES ({$id},{$roomNumber},{$cusid});";
-   	mysql_query("UPDATE room SET Status=\"stay\" , Deposit=$deposit WHERE 	Room_Number={$roomNumber};",$con);
+  
    		
    	$result=mysql_query($sql,$con);	
 	if($result)
@@ -272,12 +287,12 @@ function process_form(){
     $re=mysql_query($last);
     $rec= mysql_fetch_array($re);
     $id=$rec["id"]+1 ;
-	$sql= "INSERT INTO customer VALUES ({$customerid},'{$fname}','{$lname}','{$sex}','{$idcard}','{$address}','{$birthdate}');";
+	$sql= "INSERT INTO customer VALUES ({$customerid},'{$fname}','{$lname}','{$sex}','{$idcard}','{$address}','{$birthdate}','$tel');";
 	$sql2="INSERT INTO room_log( id, RoomNumber, customer_Customer_ID ) VALUES ({$id},{$roomNumber},{$customerid});";
 	$result=mysql_query($sql,$con);
 	$result2=mysql_query($sql2,$con);	
-	$result3=mysql_query("UPDATE room SET Status=\"stay\" ,Deposit=$deposit WHERE 	Room_Number={$roomNumber};",$con);
-   	if($result2&&$result&&$result3)
+	
+   	if($result2&&$result)
 		echo "<script> alert(\" Your data have been add\"); </script>";  
 	else  
 		echo "<script> alert(\" Error".mysql_error()." \"); </script>";  		

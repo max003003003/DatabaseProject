@@ -19,7 +19,9 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  
+    <script src="jquery-1.11.2.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
   <script src="Bootstrap/dist/js/bootstrap.min.js"></script>
   </head>
  <nav  class="navbar navbar-static-top"align="center" >
@@ -76,8 +78,25 @@
 	            <div class="container-fluid">
 	                <div class="row">
 	                    <div class="col-lg-12">
-	                        <h1>ลูกค้า</h1>
-	                       
+	                        <h1>customer 
+	                       <button id="add" type="button" class="btn btn-primary" align="right">Add</button>
+	                       <?php
+                            session_start();
+                            $_SESSION["roomNumber"]="";
+                            session_destroy($_SESSION["ch"]);
+
+
+	                       ?>
+	                  </h1>
+	                        <script>
+							$(document).ready(function(){
+								    $("#add").click(function(){
+								    	<?php   $_SESSION["ch"]=0;  ?>
+	      							  window.location = 'addcustomerform.php';
+
+	  													  });
+							});
+						</script>
 	                     
 	                    </div>
 	                </div>
@@ -106,41 +125,34 @@
 
 	<?php
 
-		if(isset($_POST["send"]))
-				 process_form(); 
+	
 		if(isset($_POST["Edit"]))
-			{ 
-				
-			   $_SESSION["roomNumber"]=$_POST["hidden"];	  
-
-
+			{ 				
+			   $_SESSION["customerid"]=$_POST["hidden"];
 			 echo " <script>
 							$(document).ready(function(){
 											    
 				      							  window.location = 'customeredit.php';
 				  													  
-										});
-				      </script>
-			";
+										});				      </script>			";
+			}
+			if(isset($_POST["Delete"]))
+			{            
+				delete_form($_POST["hidden"]);
 			}
 
-	$con=mysql_connect("localhost","root","root");
+	        $con=mysql_connect("localhost","root","root");
 			if(!$con )
 			{
 				die("connot connect: ".mysql_error());
 			}
-			 
-			 mysql_select_db("domitaryproject",$con);
+
+		mysql_select_db("domitaryproject");
 	         mysql_query("SET NAMES UTF8");
 			 $sql="select *from customer";
 			 $mydata=mysql_query($sql,$con);	 
-
-           $keys = array_keys($_POST);
-   foreach($keys as $key) {
-    echo $key." ".($_POST[$key]);
-   echo "<br>";
-   }
-			 echo " <div class=\"span9\"> <table  class=\"table table-bordered\" border=1 >
+          
+   		 echo " <div class=\"span9\"> <table  class=\"table table-bordered\" border=1 >
 		   <tr>
 			 <th>Customer_ID</th>
 			 <th>Fname</th>
@@ -149,6 +161,7 @@
 			 <th> IDCard</th>
 			 <th> Address </th>			 
 			 <th> BirthDate</th>
+			 <th> TEl </th>
 			 <th> Option </th>
 			 </tr>  ";
 
@@ -164,52 +177,32 @@
 			echo "<td>".$record['IDCard']. " </td>";
 			echo "<td>".$record['Address']. " </td>";		
 			echo "<td>".$record['BirthDate']. " </td>";
-
+			echo "<td>".$record['TEL']."</td>";
 			echo "<td style = \"display:none\">"."<input type=hidden name=hidden value=". $record['Customer_ID']. " </td>"; 
 			echo " <td class=\"text-center\"> <input  id=\"Edit\" class=\"btn btn-warning\" type='submit' name=\"Edit\" value=\"Edit\" > ";
 			echo " <input  id=\"add\" class=\"btn btn-danger\" type='submit' name=\"Delete\" value=\"Delete\" > </td>";
-		  		echo "</form>";
+		   echo "</form>";
 		}	
 
-	function process_form(){
-		$cusid=trim($_POST["ucusid"]);
-		$fname=trim($_POST["ufname"]);
-		$lname=trim($_POST["ulname"]); 
-		$sex=trim($_POST["usex"]);
-		$idcard=trim($_POST["uidcard"]);
-		$address=trim($_POST["uaddress"]); 
-		$roomnumber=trim($_POST["uroomnumber"]);
-		$birth=trim($_POST["ubirth"]);
-		$cusid=addslashes($cusid);
-		$fname=addslashes($fname);
-		$lname=addslashes($lnam); 
-		$sex=addslashes($sex);
-		$idcard=addslashes($idcard);
-		$adddress=addslashes($addslashes);
-		$roomnumber=addslashes($roomnumber);
-		$birth=addslashes($birth);
-		
-		 
-		$con=mysql_connect("localhost","root","root");
+		function delete_form($customerid)
+		{
+			
+          $con=mysql_connect("localhost","root","root");
 			if(!$con )
 			{
 				die("connot connect: ".mysql_error());
 			}
 
-		mysql_select_db("domitaryproject");    
+		mysql_select_db("domitaryproject");
 
-		$sql= "INSERT INTO customer VALUES ({$cusid},'{$fname}','{$lname}','{$sex}',{$idcard},'{$address}',{$roomnumber},'{$birth}');";
-		echo $sql;
-		
-		$result=mysql_query($sql,$con);
+			$sql="DELETE FROM customer WHERE Customer_ID={$customerid}";
+			$result=mysql_query($sql,$con);
+			if($result)
+				echo "<script> alert(\" Delete \"); </script>";  
 
-		if($result)
-			echo "<script> alert(\" have been add\"); </script>";  
-		else  
-			echo" Error";
-			
-		mysql_close($con);
-	}
+		}
+
+	
 	?>
 </div>
 

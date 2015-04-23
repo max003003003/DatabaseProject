@@ -79,11 +79,18 @@ session_start();
 	                       
 	                  <h1>add new customer 
 	                       <button id="add" type="button" class="btn btn-primary" align="right">back</button>
-	                       </h1>
+	                  </h1>
 	                        <script>
 							$(document).ready(function(){
 								    $("#add").click(function(){
-	      							  window.location = 'Customersetting.php';
+	      							  window.location =<?php session_start(); 	      							  
+	      							                          if($_SESSION["ch"]){
+	      							                            echo "'roomdata.php';";}
+	      							                          else{
+	      							                          	echo "'Customersetting.php';"; 
+	      							                            
+	      							                            }
+	      							                          ?>
 	  													  });
 							});
 						</script>
@@ -113,85 +120,124 @@ session_start();
       
        <h align="center"></h>
 		<table align="center">
-		 <form action="addcustomerform.php " method="post">  
-  
+		 <form action="addcustomerform.php " method="post">
+   
+     <?php
+
+             $con=mysql_connect("localhost","root","root");
+			if(!$con )
+			{
+				die("connot connect: ".mysql_error());
+			}
+
+		mysql_select_db("domitaryproject");
+	         mysql_query("SET NAMES UTF8");
+			 $sql="select *from customer where Customer_ID={$_SESSION["customerid"]};";
+			 $mydata=mysql_query($sql,$con);	       
+   		     $record=mysql_fetch_array($mydata);
+   		    $cusid=$record['Customer_ID'];
+			$fname=$record['Fname'];
+			$lname=$record['Lname'];
+			$sex=$record['Sex'];
+			$idcard=$record['IDCard'];
+			$addres=$record['Address'];		
+			$birthdate=explode("-", $record['BirthDate']);
+            $date=$birthdate[2];
+            $month=$birthdate[1];
+            $year=$birthdate[0];
+           
+
+
+			$tel=$record['TEL'];
+			
+            
+            $sql2=" SELECT Room_Number, Deposit
+					FROM room, room_log r
+					WHERE r.customer_Customer_ID ={$cusid} && r.roomNumber = room.Room_Number";
+           $mydata2=mysql_query($sql2,$con);
+           $record2=mysql_fetch_array($mydata2); 
+   		     $roomnumber=$record2['Room_Number'];
+   		     $deposit=$record2['Deposit'];
+   		    
+				
+    
+     ?>
+
    <tr>
-             <td>RoomNumber:</td><td><input type="text" name="uroomNumber" value=<?php echo $_SESSION["roomNumber"]; ?> ></td>
+             <td>RoomNumber:</td><td><input type="text" name="uroomNumber" value=<?php echo $roomnumber; ?> ></td>
    </tr>
    <tr>
-             <td>Deposit</td><td><input type="text" name="udeposit" value="0"></td>
+             <td>Deposit</td><td><input type="text" name="udeposit" value=<?php echo $deposit; ?>></td>
    </tr>
    <tr>
-             <td>CustomerID:</td><td><input type="text" name="ucustomerid"></td>
+             <td>CustomerID:</td><td><input type="text" name="ucustomerid" value=<?php echo $cusid; ?>></td>
    </tr>
     <tr>
-             <td>FirstName:</td><td><input type="text" name="ufirstname"></td>
+             <td>FirstName:</td><td><input type="text" name="ufirstname" value=<?php echo $fname; ?>></td>
    </tr>
     <tr>
-             <td>Lastname:</td><td><input type="text" name="ulastname"></td>
+             <td>Lastname:</td><td><input type="text" name="ulastname" value=<?php echo $lname; ?>></td>
    </tr>
     <tr>
-          <td>Sex:</td><td><input type="radio" name="usex" value="male" checked>male
-        <input type="radio" name="usex" value="female">female
+          <?php
+          if(!strcmp($sex,"male")){
+          echo"<td>Sex:</td><td><input type=\"radio\" name=\"usex\" value=\"male\" checked>male";
+          echo"<input type=\"radio\" name=\"usex\" value=\"female\"  >female";
+        }
+        else 
+         {  
+         	  echo"<td>Sex:</td><td><input type=\"radio\" name=\"usex\" value=\"male\">male";
+              echo"<input type=\"radio\" name=\"usex\" value=\"female\" checked >female";
+
+          }
+        ?>
     </tr>
     <tr>
-             <td>IDcard:</td><td><input type="text" name="uidcard"></td>
+             <td>IDcard:</td><td><input type="text" name="uidcard" value=<?php echo $idcard; ?>></td>
     </tr>
      <tr>
-             <td>Address:</td><td><input type="text" name="uaddres"></td>
+             <td>Address:</td><td><input type="text" name="uaddress"      value=<?php echo $addres; ?>></td>
+    </tr>
+    <tr> 
+           <td>Tel.</td><td><input type="text" name="utel" value=<?php echo $tel; ?>></td>
     </tr>
 <tr><td>
-<select name=month value=''>Select Month</option>
-<option value='01'>January</option>
-<option value='02'>February</option>
-<option value='03'>March</option>
-<option value='04'>April</option>
-<option value='05'>May</option>
-<option value='06'>June</option>
-<option value='07'>July</option>
-<option value='08'>August</option>
-<option value='09'>September</option>
-<option value='10'>October</option>
-<option value='11'>November</option>
-<option value='12'>December</option>
+<select name=month >Select Month</option>
+<?php
+$monthr = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+for($i=1;$i<=12;$i++)
+{
+if($i==intval($month))
+   echo"<option value='{$i}' selected >{$monthr[$i-1]}</option>";
+else
+   echo"<option value='{$i}' > {$monthr[$i-1]} </option>";
+}
+?>
 </select>
 </td>
 <td>
-Date<select name=dt >
-<option value='01'>01</option>
-<option value='02'>02</option>
-<option value='03'>03</option>
-<option value='04'>04</option>
-<option value='05'>05</option>
-<option value='06'>06</option>
-<option value='07'>07</option>
-<option value='08'>08</option>
-<option value='09'>09</option>
-<option value='10'>10</option>
-<option value='11'>11</option>
-<option value='12'>12</option>
-<option value='13'>13</option>
-<option value='14'>14</option>
-<option value='15'>15</option>
-<option value='16'>16</option>
-<option value='17'>17</option>
-<option value='18'>18</option>
-<option value='19'>19</option>
-<option value='20'>20</option>
-<option value='21'>21</option>
-<option value='22'>22</option>
-<option value='23'>23</option>
-<option value='24'>24</option>
-<option value='25'>25</option>
-<option value='26'>26</option>
-<option value='27'>27</option>
-<option value='28'>28</option>
-<option value='29'>29</option>
-<option value='30'>30</option>
-<option value='31'>31</option>
+Date<select name=dt value=<?php echo $month; ?> >
+<?php
+    for($i=1;$i<=31;$i++)
+    { 
+    	if($i==intval($date))
+    	{
+           echo "<option value='{$i}' selected>{$i}</option>";
+    	}
+    	else
+    	{
+          echo "<option value='{$i}'>{$i}</option> ";
+    	}
+
+
+    }
+
+
+?>
+
 </select>
 
-Year(yyyy)<input type=text name=year size=4 >
+Year(yyyy)<input type=text name=year size=4 value=<?php echo $year; ?> >
 </td>
  </tr>   
      <td><input type="submit" name="send" value="add"></td>
@@ -233,16 +279,14 @@ function process_form(){
 	$birthdate=trim($_POST["year"]."-".$_POST["month"]."-".$_POST["dt"]);	
 	$deposit=trim($_POST["udeposit"]);
 	$roomNumber=trim($_POST["uroomNumber"]);	 
+	$tel=trim($_POST["utel"]);
 	$con=mysql_connect("localhost","root","root");
 		if(!$con )
 		{
 			die("connot connect: ".mysql_error());
 		}
 
-	mysql_select_db("domitaryproject");   
-
-    $getcus=mysql_query("SELECT IDCard FROM customer WHERE IDCard = \"$idcard\" ;",$con);
-    $rr=mysql_num_rows($getcus);
+	mysql_select_db("domitaryproject");      
    
    if($rr)//oldmember
    {
@@ -263,27 +307,7 @@ function process_form(){
 		echo "<script> alert(\" Error".mysql_error()." \"); </script>"; 
 	mysql_close($con);           
    }
-   else{   	  //new member
-    $last="SELECT id FROM room_log ORDER BY id DESC LIMIT 1";    
-    $las2t="SELECT Customer_ID FROM customer ORDER BY Customer_ID DESC LIMIT 1";
-    $re2=mysql_query($las2t);
-    $rec2= mysql_fetch_array($re2);
-    $rec2=$rec2["Customer_ID"]+1 ;   
-    $re=mysql_query($last);
-    $rec= mysql_fetch_array($re);
-    $id=$rec["id"]+1 ;
-	$sql= "INSERT INTO customer VALUES ({$customerid},'{$fname}','{$lname}','{$sex}','{$idcard}','{$address}','{$birthdate}');";
-	$sql2="INSERT INTO room_log( id, RoomNumber, customer_Customer_ID ) VALUES ({$id},{$roomNumber},{$customerid});";
-	$result=mysql_query($sql,$con);
-	$result2=mysql_query($sql2,$con);	
-	$result3=mysql_query("UPDATE room SET Status=\"stay\" ,Deposit=$deposit WHERE 	Room_Number={$roomNumber};",$con);
-   	if($result2&&$result&&$result3)
-		echo "<script> alert(\" Your data have been add\"); </script>";  
-	else  
-		echo "<script> alert(\" Error".mysql_error()." \"); </script>";  		
-	mysql_close($con);
-
-   }
+   
 
 
 
